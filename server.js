@@ -13,12 +13,14 @@ function fromKeyList(packet) {
 var initialized = false
 
 function socketAPIServer(apis, initFunction, authenticator = fromKeyList) {
-  const server = serverIo.listen(process.env.PORT || 8000)
+  const PORT = process.env.PORT || 8000
+  const server = serverIo.listen(PORT)
+  console.log(`listening on port: ${PORT}`)
 
   server.on('connection', (socket) => {
     if (!initialized) {
       initialized = true
-      process.nextTick(initFunction)
+      initFunction && process.nextTick(initFunction)
     }
 
     // this must be first - to block unauthenticated access to the APIs
