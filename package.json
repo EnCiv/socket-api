@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/djbowers/socket-api/issues"
   },
-  "homepage": "https://github.com/djbowers/socket-api#readme"
+  "homepage": "https://github.com/djbowers/socket-api#readme",
+  "dependencies": {
+    "socket.io": "^2.3.0"
+  }
 }
