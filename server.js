@@ -2,20 +2,14 @@
 
 const serverIo = require('socket.io')
 
-const api_keys = JSON.parse(process.env.SOCKET_API_KEYS || '[]')
-
-function fromKeyList(packet) {
-  let index = api_keys.indexOf(packet[1])
-  logger.info('fromKeyList found:', index)
-  return index > -1
-}
-
-var initialized = false
-
 function socketAPIServer(apis, initFunction, authenticator = fromKeyList) {
+  checkEnvKeys()
+
   const PORT = process.env.PORT || 8000
   const server = serverIo.listen(PORT)
   console.log(`listening on port: ${PORT}`)
+
+  let initialized = false
 
   server.on('connection', (socket) => {
     if (!initialized) {
@@ -65,6 +59,22 @@ function socketAPIServer(apis, initFunction, authenticator = fromKeyList) {
   })
 
   return server
+}
+
+function fromKeyList(packet) {
+  const api_keys = JSON.parse(process.env.SOCKET_API_KEYS || '[]')
+  let index = api_keys.indexOf(packet[1])
+  logger.info('fromKeyList found:', index)
+  return index > -1
+}
+
+function checkEnvKeys() {
+  if (!process.env.SOCKET_API_KEYS) {
+    console.error(
+      'SOCKET_API_KEYS needed.  On bash use: export SOCKET_API_KEYS="your-keys-here" or add them to your .bashrc file'
+    )
+    process.exit()
+  }
 }
 
 module.exports = socketAPIServer
