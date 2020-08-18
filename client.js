@@ -5,7 +5,9 @@ const clientIo = require('socket.io-client')
 function socketAPIClient(...args) {
   checkEnvKeys()
 
-  const ioClient = clientIo.connect(process.env.SOCKET_API_URL)
+  const url = process.env.SOCKET_API_URL
+  const ioClient = clientIo.connect(url)
+  console.info(`socketIO client connected to server at: ${url}`)
 
   let authenticated = false
   let queued = []

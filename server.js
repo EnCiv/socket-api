@@ -7,7 +7,7 @@ function socketAPIServer(apis, initFunction, authenticator = fromKeyList) {
 
   const PORT = process.env.PORT || 8000
   const server = serverIo.listen(PORT)
-  console.log(`listening on port: ${PORT}`)
+  console.info(`socketIO server listening on port: ${PORT}`)
 
   let initialized = false
 
