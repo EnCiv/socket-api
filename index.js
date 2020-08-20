@@ -1,4 +1,4 @@
-const socketAPIServer = require('./server')
-const socketAPIClient = require('./client')
+const socketApiServer = require('./src/server')
+const socketApiClient = require('./src/client')
 
-module.exports = { socketAPIServer, socketAPIClient }
+module.exports = { socketApiServer, socketApiClient }
