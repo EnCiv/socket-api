@@ -62,7 +62,12 @@ function socketApiServer(apis, initFunction, authenticator = fromKeyList) {
     })
   })
 
-  return ioServer
+  function disconnect() {
+    ioServer.close()
+    httpServer.close()
+  }
+
+  return [ioServer, disconnect]
 }
 
 module.exports = socketApiServer
