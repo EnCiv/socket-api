@@ -20,16 +20,10 @@ function socketApiServer(apis, initFunction, authenticator = fromKeyList) {
     console.info('http server listening on port:', port)
   })
   const ioServer = socketIo(httpServer)
-
-  let initialized = false
+  initFunction && process.nextTick(initFunction)
 
   ioServer.on('connection', (socket) => {
     console.info('connected to socket:', socket.id)
-
-    if (!initialized) {
-      initialized = true
-      initFunction && process.nextTick(initFunction)
-    }
 
     // this must be first - to block unauthenticated access to the APIs
     socket.use((packet, next) => {

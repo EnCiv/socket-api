@@ -11,4 +11,4 @@ const initFunction = () => {
   console.log('init function')
 }
 
-const server = socketApiServer(APIs, initFunction)
+socketApiServer(APIs, initFunction)
