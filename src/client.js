@@ -4,12 +4,11 @@ const socketIoClient = require('socket.io-client')
 
 const validateEnvKey = require('./util')
 
-function socketApiClient(...args) {
+const TIMEOUT = 60000
+
+function callSocketApi(...args) {
   validateEnvKey('SOCKET_API_URL')
   validateEnvKey('SOCKET_API_KEY')
-
-  let authenticated = false
-  let queued = []
 
   const socket = socketIoClient.connect(process.env.SOCKET_API_URL, {
     'reconnection delay': 0,
@@ -18,31 +17,23 @@ function socketApiClient(...args) {
     transports: ['websocket'],
   })
 
-  socket.on('connect', () => {
-    console.info('connected to socket:', socket.id)
-    socket.emit('authenticate', process.env.SOCKET_API_KEY)
-    socket.on('authenticated', () => {
-      authenticated = true
-      while (queued.length) queued.shift()()
-    })
-  })
-
-  function callSocketApi(...args) {
-    socket.emit(...args)
-    console.info('socket api called with args:', ...args)
-  }
-
-  if (!authenticated) queued.push(() => callSocketApi(...args))
-  else callSocketApi(...args)
-
   function disconnect() {
     socket.emit('disconnect')
     console.info('disconnected from socket:', socket.id)
     return socket.close()
   }
 
-  if (!authenticated) queued.push(disconnect)
-  else disconnect()
+  socket.on('connect', () => {
+    console.info('connected to socket:', socket.id)
+    socket.emit('authenticate', process.env.SOCKET_API_KEY)
+    socket.on('authenticated', () => {
+      socket.emit(...args)
+      console.info('socket api called with args:', ...args)
+      disconnect()
+    })
+  })
+
+  setTimeout(disconnect, TIMEOUT)
 }
 
-module.exports = socketApiClient
+module.exports = callSocketApi

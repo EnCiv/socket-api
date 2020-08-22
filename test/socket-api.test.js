@@ -1,6 +1,6 @@
 'use strict'
 
-const { socketApiServer, socketApiClient } = require('../index')
+const { socketApiServer, callSocketApi } = require('../index')
 
 const APIs = [
   {
@@ -9,14 +9,13 @@ const APIs = [
   },
 ]
 
-let ioServer
 let disconnect
 
 /**
  * Setup SocketAPI Server
  */
 beforeAll((done) => {
-  ;[ioServer, disconnect] = socketApiServer(APIs)
+  disconnect = socketApiServer(APIs)
   done()
 })
 
@@ -30,7 +29,7 @@ afterAll((done) => {
 
 describe('socket-api', () => {
   test('client calls api function', (done) => {
-    socketApiClient('foo')
+    callSocketApi('foo')
     // TODO: not sure what to assert here to make sure foo was called
     done()
   })

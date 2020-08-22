@@ -61,7 +61,7 @@ function socketApiServer(apis, initFunction, authenticator = fromKeyList) {
     httpServer.close()
   }
 
-  return [ioServer, disconnect]
+  return disconnect
 }
 
 module.exports = socketApiServer

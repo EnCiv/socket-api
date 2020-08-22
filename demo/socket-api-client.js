@@ -1,3 +1,3 @@
-const { socketApiClient } = require('../index')
+const { callSocketApi } = require('../index')
 
-socketApiClient('foo')
+callSocketApi('foo')
