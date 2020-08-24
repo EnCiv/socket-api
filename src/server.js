@@ -1,6 +1,5 @@
 'use strict'
 
-const http = require('http')
 const socketIo = require('socket.io')
 
 const validateEnvKey = require('./util')
@@ -15,11 +14,7 @@ function fromKeyList(packet) {
 function socketApiServer(apis, initFunction, authenticator = fromKeyList) {
   validateEnvKey('SOCKET_API_KEYS')
 
-  const port = process.env.PORT || 8000
-  const httpServer = http.createServer().listen(port, () => {
-    console.info('http server listening on port:', port)
-  })
-  const ioServer = socketIo(httpServer)
+  const ioServer = socketIo().listen(process.env.PORT || 8000)
   initFunction && process.nextTick(initFunction)
 
   ioServer.on('connection', (socket) => {
@@ -58,7 +53,6 @@ function socketApiServer(apis, initFunction, authenticator = fromKeyList) {
 
   function disconnect() {
     ioServer.close()
-    httpServer.close()
   }
 
   return disconnect
