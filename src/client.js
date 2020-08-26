@@ -8,12 +8,7 @@ function callSocketApi(...args) {
   validateEnvKey('SOCKET_API_URL')
   validateEnvKey('SOCKET_API_KEY')
 
-  const socket = socketIoClient.connect(process.env.SOCKET_API_URL, {
-    'reconnection delay': 0,
-    'reopen delay': 0,
-    'force new connection': true,
-    transports: ['websocket'],
-  })
+  const socket = socketIoClient.connect(process.env.SOCKET_API_URL)
 
   socket.on('connect', () => {
     console.info('connected to socket:', socket.id)
