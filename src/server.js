@@ -39,6 +39,7 @@ function socketApiServer(apis, initFunction, authenticator = fromKeyList) {
       socket.on(api.name, (...args) => {
         if (!socket.auth) return // silently ignore unauthorized packets
         try {
+          console.info('calling %s with args:', api.name, ...args)
           api.func(...args)
         } catch (error) {
           console.error(
