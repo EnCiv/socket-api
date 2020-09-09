@@ -14,7 +14,10 @@ function fromKeyList(packet) {
 function socketApiServer(apis, initFunction, authenticator = fromKeyList) {
   validateEnvKey('SOCKET_API_KEYS')
 
-  const ioServer = socketIo().listen(process.env.PORT || 8000)
+  const port = process.env.PORT || 8000
+  const ioServer = socketIo().listen(port)
+  console.info('listening on port:', port)
+
   initFunction && process.nextTick(initFunction)
 
   ioServer.on('connection', (socket) => {
