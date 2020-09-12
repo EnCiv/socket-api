@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --config ./jest.config.json"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/djbowers/socket-api/issues"
   },
-  "homepage": "https://github.com/djbowers/socket-api#readme"
+  "homepage": "https://github.com/djbowers/socket-api#readme",
+  "dependencies": {
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "jest": "^26.4.1"
+  }
 }
